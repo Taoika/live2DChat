@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import './index.scss'
-import { Application } from 'pixi.js'
-import {Ticker, TickerPlugin} from '@pixi/ticker';
+import { Application, Point } from 'pixi.js'
+import { Ticker, TickerPlugin } from '@pixi/ticker';
 import { Live2DModel } from 'pixi-live2d-display/cubism4';
 import { FaceMesh, FACEMESH_TESSELATION } from '@mediapipe/face_mesh';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils'
@@ -17,12 +17,11 @@ Live2DModel.registerTicker(Ticker);
 Application.registerPlugin(TickerPlugin);
 
 const modelUrl = "/src/assets/models/hiyori/hiyori_pro_t10.model3.json";
-const modelUrl2 = "/src/assets/models/miku/miku.model3.json"
+const modelUrl2 = "/src/assets/models/SYR/SYR.model3.json"
 
 export default function Home() {
 
-	const [models, setModels] = useState<any[]>([]);
-	const dragging = useRef(false);
+	const models = useRef<any[]>([]);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const guideRef = useRef<HTMLCanvasElement>(null);
@@ -37,13 +36,29 @@ export default function Home() {
 		const app = createPixi();
 
 		// 模型
-		currentModel = await createModel(modelUrl);
-		model2 = await createModel(modelUrl2);
+		currentModel = await createModel(modelUrl, [window.innerWidth * 0.2, window.innerHeight * 0.9], 0.4);
+		model2 = await createModel(modelUrl2, [window.innerWidth * 0.5, window.innerHeight * 0.9], 0.2);
 
-		setModels([currentModel, model2])
+		models.current = [currentModel, model2]
 
 		// pixi配置模型
 		app.stage.addChild(currentModel, model2);
+
+		// 交互配置
+		const mousePosition = new Point();
+
+		app.view.addEventListener('mousewheel', (ev: any) => {
+			mousePosition.set(ev.clientX, ev.clientY);
+			
+			const found = app.renderer.plugins.interaction.hitTest(
+				mousePosition,
+				app.stage
+			);
+		
+			if (found) { 
+				found.emit('scroll', ev); 
+			}
+		});
 
 	}
 
@@ -59,22 +74,16 @@ export default function Home() {
 	}
 
 	// 加载live2d模型
-	const createModel = async (modelUrl: string)=> {
+	const createModel = async (modelUrl: string, position: number[], scale: number)=> {
 		// 强制转换成Cubism4InternalModel类型
 		const model = await Live2DModel.from(modelUrl, { autoInteract: false, autoUpdate: true,});
-		model.scale.set(0.4); // 规模
+		model.scale.set(scale); // 规模
 		model.interactive = true; // 交互
 		model.anchor.set(0.5, 0.5);
-		model.position.set(window.innerWidth * 0.4, window.innerHeight * 0.9);
+		model.position.set(position[0], position[1]);
 
 		// 为L2D模型添加事件监听器 拖动模型功能
 		draggable(model);
-
-		canvasRef.current?.addEventListener("wheel", (e)=>{
-			e.preventDefault();
-			// 设置缩放比例 clamp 将数值限制在一个范围内
-			model.scale?.set(clamp(model.scale.x + e.deltaY * -0.001, -0.5, 10)); 
-		})
 
 		return model
 	}
@@ -105,17 +114,21 @@ export default function Home() {
 		model.on("pointerdown", (e: any) => { // 按下
 			model.offsetX = e.data.global.x - model.position.x;
 			model.offsetY = e.data.global.y - model.position.y;
-			dragging.current = true;
+			model.dragging = true;
 		});
 
 		model.on("pointerup", (e: any) => { // 松开
-			dragging.current = false;
+			model.dragging = false;
 		});
 
 		model.on("pointermove", (e: any) => { // 移动		
-			if (dragging.current) {
+			if (model.dragging) {
 				model.position.set(e.data.global.x - model.offsetX, e.data.global.y - model.offsetY);
 			}
+		});
+
+		model.on('scroll', (e: any) => { // 滚轮
+			model.scale.set(clamp(model.scale.x + e.deltaY * -0.001, -0.5, 10)); 
 		});
 	}
 
@@ -158,7 +171,7 @@ export default function Home() {
 		if (!currentModel || !points || !videoElement) return;
 	
 		// 存储人脸的动画参数
-		let riggedFace;
+		let riggedFace: any;
 	
 		if (points) {
 			// 使用 kalidokit 人脸计算器 将预测的3D关键点转换为简单的欧拉旋转和混合形状的值 
@@ -166,10 +179,9 @@ export default function Home() {
 				runtime: "mediapipe", // 使用Mediapipe库的人脸网络模型
 				video: videoElement,
 			});
-			console.log(models);
-			
-			rigFace(riggedFace, 0.5, currentModel); // 将人脸的动画参数应用到currentModel上 使其能够根据人脸的表情和姿态进行动画
-			rigFace(riggedFace, 0.5, model2);
+			models.current.forEach(model=>{
+				rigFace(riggedFace, 0.5, model);
+			})
 		}
 	};
 
