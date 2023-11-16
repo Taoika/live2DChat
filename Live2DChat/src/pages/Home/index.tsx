@@ -21,10 +21,10 @@ const modelUrl2 = "/src/assets/models/SYR/SYR.model3.json"
 
 export default function Home() {
 
-	const models = useRef<any[]>([]);
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const videoRef = useRef<HTMLVideoElement>(null);
-	const guideRef = useRef<HTMLCanvasElement>(null);
+	const models = useRef<any[]>([]); // 模型数组
+	const canvasRef = useRef<HTMLCanvasElement>(null); // 模型渲染区域
+	const videoRef = useRef<HTMLVideoElement>(null); // 视频标签
+	const guideRef = useRef<HTMLCanvasElement>(null); // 视频所在
 	let currentModel: any; // 实在是搞不懂返回的什么逼类型
 	let model2: any;
 	let facemesh: FaceMesh;
@@ -174,11 +174,12 @@ export default function Home() {
 		let riggedFace: any;
 	
 		if (points) {
-			// 使用 kalidokit 人脸计算器 将预测的3D关键点转换为简单的欧拉旋转和混合形状的值 
+			// 使用 kalidokit 人脸计算器 将预测的3D关键点转换为简单的欧拉旋转和混合形状的值 结构化数据
 			riggedFace = Face.solve(points, {
 				runtime: "mediapipe", // 使用Mediapipe库的人脸网络模型
 				video: videoElement,
 			});
+			
 			models.current.forEach(model=>{
 				rigFace(riggedFace, 0.5, model);
 			})
