@@ -1,14 +1,15 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import './index.scss'
-import { Application, Point } from 'pixi.js'
+import { Application } from 'pixi.js'
 import { Ticker, TickerPlugin } from '@pixi/ticker';
 import { Live2DModel } from 'pixi-live2d-display/cubism4';
 import { FaceMesh, FACEMESH_TESSELATION } from '@mediapipe/face_mesh';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils'
 import { Camera } from '@mediapipe/camera_utils';
-import { Face, Results, Vector, Utils } from 'kalidokit'
+import { Face, Results, Vector } from 'kalidokit'
 const { lerp } = Vector
-const { clamp } = Utils
+
+import usePixi from '../../hooks/usePixi';
 
 // 为 Live2DModel 注册 Ticker
 Live2DModel.registerTicker(Ticker);
@@ -16,77 +17,18 @@ Live2DModel.registerTicker(Ticker);
 // 为 Application 注册 Ticker
 Application.registerPlugin(TickerPlugin);
 
-const modelUrl = "/src/assets/models/hiyori/hiyori_pro_t10.model3.json";
+const modelUrl = "/src/assets/models/hiyori/hiyori_pro_t10.model3.json"; // 运行时文件夹下面的model3文件，如果是自己的记得要调整预设动作
 const modelUrl2 = "/src/assets/models/SYR/SYR.model3.json"
 
 export default function Home() {
 
-	const models = useRef<any[]>([]); // 模型数组
-	const canvasRef = useRef<HTMLCanvasElement>(null); // 模型渲染区域
 	const videoRef = useRef<HTMLVideoElement>(null); // 视频标签
 	const guideRef = useRef<HTMLCanvasElement>(null); // 视频所在
-	let currentModel: any; // 实在是搞不懂返回的什么逼类型
-	let model2: any;
 	let facemesh: FaceMesh;
 
-	// pixi配置
-	const setPixi = async () => {
-		
-		// 创建pixi应用
-		const app = createPixi();
+	const { canvasRef, models } = usePixi([modelUrl, modelUrl2])
 
-		// 模型
-		currentModel = await createModel(modelUrl, [window.innerWidth * 0.2, window.innerHeight * 0.9], 0.4);
-		model2 = await createModel(modelUrl2, [window.innerWidth * 0.5, window.innerHeight * 0.9], 0.2);
-
-		models.current = [currentModel, model2]
-
-		// pixi配置模型
-		app.stage.addChild(currentModel, model2);
-
-		// 交互配置
-		const mousePosition = new Point();
-
-		app.view.addEventListener('mousewheel', (ev: any) => {
-			mousePosition.set(ev.clientX, ev.clientY);
-			
-			const found = app.renderer.plugins.interaction.hitTest(
-				mousePosition,
-				app.stage
-			);
-		
-			if (found) { 
-				found.emit('scroll', ev); 
-			}
-		});
-
-	}
-
-	// 创建pixi应用
-	const createPixi = () => {
-		return new Application({
-			view: canvasRef.current ? canvasRef.current : undefined,
-			autoStart: true,
-			backgroundAlpha: 0,
-			backgroundColor: 0xffffff,
-			resizeTo: window,
-		})
-	}
-
-	// 加载live2d模型
-	const createModel = async (modelUrl: string, position: number[], scale: number)=> {
-		// 强制转换成Cubism4InternalModel类型
-		const model = await Live2DModel.from(modelUrl, { autoInteract: false, autoUpdate: true,});
-		model.scale.set(scale); // 规模
-		model.interactive = true; // 交互
-		model.anchor.set(0.5, 0.5);
-		model.position.set(position[0], position[1]);
-
-		// 为L2D模型添加事件监听器 拖动模型功能
-		draggable(model);
-
-		return model
-	}
+/************************************************* 将人脸数据填入模型 *********************************************************** */
 
 	// 创建配置facemesh
 	const createFaceMesh = () => {
@@ -107,29 +49,6 @@ export default function Home() {
 
 		// 为MediaPipe Face Mesh对象传入回调函数
 		facemesh.onResults(onResults);
-	}
-
-	// 模型拖曳设置
-	const draggable = (model: any) => {
-		model.on("pointerdown", (e: any) => { // 按下
-			model.offsetX = e.data.global.x - model.position.x;
-			model.offsetY = e.data.global.y - model.position.y;
-			model.dragging = true;
-		});
-
-		model.on("pointerup", (e: any) => { // 松开
-			model.dragging = false;
-		});
-
-		model.on("pointermove", (e: any) => { // 移动		
-			if (model.dragging) {
-				model.position.set(e.data.global.x - model.offsetX, e.data.global.y - model.offsetY);
-			}
-		});
-
-		model.on('scroll', (e: any) => { // 滚轮
-			model.scale.set(clamp(model.scale.x + e.deltaY * -0.001, -0.5, 10)); 
-		});
 	}
 
 	// 结果回调函数
@@ -168,13 +87,13 @@ export default function Home() {
 	// 3D转L2D
 	const animateLive2DModel = (points: Results) => {
 		const videoElement = videoRef.current
-		if (!currentModel || !points || !videoElement) return;
+		if (!models.current[0] || !points || !videoElement) return;
 	
 		// 存储人脸的动画参数
 		let riggedFace: any;
 	
 		if (points) {
-			// 使用 kalidokit 人脸计算器 将预测的3D关键点转换为简单的欧拉旋转和混合形状的值 结构化数据
+			// L2D结构化数据
 			riggedFace = Face.solve(points, {
 				runtime: "mediapipe", // 使用Mediapipe库的人脸网络模型
 				video: videoElement,
@@ -266,6 +185,8 @@ export default function Home() {
 		};
 	};
 
+/************************************************* 开启摄像头 *********************************************************** */
+
 	// 使用MediaPipe Face Mesh库来启动一个摄像头，并在一个视频元素上实时显示人脸的3D网格
 	const startCamera = () => {
 		const videoElement = videoRef.current;
@@ -281,8 +202,6 @@ export default function Home() {
 	};
 
 	useEffect(()=>{
-		// pixi配置
-		setPixi();
 		// 人脸网格创建
 		createFaceMesh();
 		// 相机
