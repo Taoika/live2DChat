@@ -3,7 +3,6 @@ import { FaceMesh as _FaceMesh, FACEMESH_TESSELATION as _FACEMESH_TESSELATION } 
 import { drawConnectors as _drawConnectors, drawLandmarks as _drawLandmarks } from '@mediapipe/drawing_utils'
 import { Camera as _Camera } from '@mediapipe/camera_utils';
 import { Face, Results, TFace } from 'kalidokit'
-import { rigFace } from '../utils/model';
 import { live2d } from '../type/Live2d';
 
 import { useAppDispatch } from '../store/hook';
@@ -17,6 +16,9 @@ const drawConnectors = _drawConnectors || win.drawConnectors
 const drawLandmarks = _drawLandmarks || win.drawLandmarks
 const FACEMESH_TESSELATION = _FACEMESH_TESSELATION || win.FACEMESH_TESSELATION
 
+/***
+ * 获取 转换3D人脸数据为 L2D 数据
+ */
 const useFace = (models: React.MutableRefObject<any[]>) => {
 
     const dispatch = useAppDispatch()
