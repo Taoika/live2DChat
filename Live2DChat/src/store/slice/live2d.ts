@@ -12,6 +12,7 @@ const initialState: initialState = {
     live2dData: null,
 };
 
+// live2d数据
 export const live2dSlice = createSlice({
     name: 'live2d',
     initialState,
