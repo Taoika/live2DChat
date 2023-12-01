@@ -3,28 +3,23 @@ import './index.scss'
 import usePixi from '../../hooks/usePixi';
 import useFace from '../../hooks/useFace';
 import { rigFace } from '../../utils/model';
-import { useAppSelector } from "../../store/hook";
+import { useAppSelector, useAppDispatch } from "../../store/hook";
+import { setInRoom } from '../../store/slice/userInfo';
 import usePeer from '../../hooks/usePeer';
-
-const modelUrl = "http://120.24.255.77/models/hiyori/hiyori_pro_t10.model3.json"; // 运行时文件夹下面的model3文件，如果是自己的记得要调整预设动作
 
 export default function Home() {
 
+	const dispatch = useAppDispatch();
 	const { live2dData } = useAppSelector((state) => state.live2d)
-	const { userId } = useAppSelector((state) => state.userInfo)
-
+	const { inRoom } = useAppSelector((state) => state.userInfo)
 
 	const dataChannel = useRef<RTCDataChannel>();
-	const userIdRef = useRef(userId);
-	const InRoom = useRef(false);
 
-	const { canvasRef, models } = usePixi(modelUrl)
+	const { peerRef } = usePeer()
+	const { canvasRef, models } = usePixi()
 	const { videoRef, guideRef } = useFace(models)
-	const { peerRef } = usePeer(userIdRef, InRoom)
 
 	const createDataChannel = () => { // dataChannel创建
-		console.log('peerRef.current->', peerRef.current);
-		
 		const channel = peerRef.current!.createDataChannel("KKTRoom_0");
 	
 		channel.onopen = () => {
@@ -33,8 +28,6 @@ export default function Home() {
 		}
 	
 		channel.onmessage = (event) => {
-			console.log(event.data);
-			
 		  models.current.forEach(model=>{
 			rigFace(JSON.parse(event.data), 0.5, model);
 		})
@@ -48,7 +41,7 @@ export default function Home() {
 	}
 
 	const joinRoom = () => { // 加入房间
-		InRoom.current = true;
+		dispatch(setInRoom(true));
 	}
 
 	useEffect(()=>{ // 监听L2D数据更改
@@ -58,9 +51,9 @@ export default function Home() {
 	},[live2dData])
 
 	useEffect(()=>{
-		if(!InRoom.current || dataChannel.current) return;
+		if(!inRoom || dataChannel.current) return;
 		dataChannel.current = createDataChannel();
-	},[InRoom.current])
+	},[inRoom])
 
 	return (
 		<div className='Home'>

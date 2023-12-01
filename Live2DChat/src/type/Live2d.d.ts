@@ -48,3 +48,8 @@ export type live2d = {
         y: number
     }
 }
+
+export interface userModel {
+    userId: string,
+    modelUrl: string,
+}

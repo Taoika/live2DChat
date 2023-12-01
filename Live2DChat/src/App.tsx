@@ -12,21 +12,7 @@ function App() {
 
   useEffect(()=>{ // 用户身份验证
     if(userId) return ;
-
-    const userInfoStr = localStorage.getItem('Chat-User');
-
-    if(userInfoStr) { // 存储用户信息
-      const userInfo = JSON.parse(userInfoStr);
-      dispatch(setUserId(userInfo.userId));
-    }
-    else {
-      const userId = new Date().getTime();
-      dispatch(setUserId(userId));
-      const userInfo = {
-        userId: userId
-      }
-      localStorage.setItem('Chat-User', JSON.stringify(userInfo))
-    }
+    dispatch(setUserId(new Date().getTime()));
     
   },[])
 
