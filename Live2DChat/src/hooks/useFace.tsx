@@ -2,8 +2,12 @@ import { useRef, useEffect } from 'react';
 import { FaceMesh as _FaceMesh, FACEMESH_TESSELATION as _FACEMESH_TESSELATION } from '@mediapipe/face_mesh';
 import { drawConnectors as _drawConnectors, drawLandmarks as _drawLandmarks } from '@mediapipe/drawing_utils'
 import { Camera as _Camera } from '@mediapipe/camera_utils';
-import { Face, Results } from 'kalidokit'
+import { Face, Results, TFace } from 'kalidokit'
 import { rigFace } from '../utils/model';
+import { live2d } from '../type/Live2d';
+
+import { useAppDispatch } from '../store/hook';
+import { setLive2dData } from '../store/slice/live2d';
 
 // 这是mediapipe旧版本的问题 可以使用以下方法解决 据说新版本没有这个问题 先暂时用着吧
 const win = window as any;
@@ -15,9 +19,33 @@ const FACEMESH_TESSELATION = _FACEMESH_TESSELATION || win.FACEMESH_TESSELATION
 
 const useFace = (models: React.MutableRefObject<any[]>) => {
 
+    const dispatch = useAppDispatch()
+
     const videoRef = useRef<HTMLVideoElement>(null); // 视频标签
 	const guideRef = useRef<HTMLCanvasElement>(null); // 视频所在
-    
+
+    const typeTransform = (face: TFace): live2d => {
+        return {
+            brow: face.brow,
+            eye: face.eye,
+            head: {
+                degrees: face.head.degrees,
+                height: face.head.height,
+                normalized: face.head.normalized,
+                position: {
+                    x: face.head.position.x,
+                    y: face.head.position.y,
+                    z: face.head.position.z
+                },
+                width: face.head.width,
+                x: face.head.x,
+                y: face.head.y,
+                z: face.head.z,
+            },
+            mouth: face.mouth,
+            pupil: face.pupil,
+        }
+    }    
 
 	// 创建配置facemesh
 	const createFaceMesh = () => {
@@ -90,12 +118,9 @@ const useFace = (models: React.MutableRefObject<any[]>) => {
                 video: videoElement,
             });
 
-            // console.log('riggedFace->', riggedFace);
+            const newRiggedFace = typeTransform(riggedFace)
             
-            
-            models.current.forEach(model=>{
-                rigFace(riggedFace, 0.5, model);
-            })
+            dispatch(setLive2dData(newRiggedFace));
         }
     };
 

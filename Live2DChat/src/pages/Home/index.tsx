@@ -1,25 +1,39 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './index.scss'
 import usePixi from '../../hooks/usePixi';
 import useFace from '../../hooks/useFace';
+import { rigFace } from '../../utils/model';
+import { useAppSelector } from "../../store/hook";
 
 const WS_URL = 'ws://120.24.255.77:30000/websocket'
 const modelUrl = "http://120.24.255.77/models/hiyori/hiyori_pro_t10.model3.json"; // 运行时文件夹下面的model3文件，如果是自己的记得要调整预设动作
 
 export default function Home() {
 
+	const { live2dData } = useAppSelector((state) => state.live2d)
+
 	const socketRef = useRef<WebSocket>()
 	const peerRef = useRef<RTCPeerConnection>()
 	const dataChannel = useRef<RTCDataChannel>();
+	const userIdRef = useRef<number | null>();
 
 	const { canvasRef, models } = usePixi(modelUrl)
 	const { videoRef, guideRef } = useFace(models)
+
+	useEffect(()=>{ // 监听L2D数据更改
+		if(!live2dData || dataChannel.current?.readyState != 'open') return ;
+
+		dataChannel.current?.send(JSON.stringify(live2dData))
+	},[live2dData])
 
 	const createPeer = () => { // peer创建
 		const peer = new RTCPeerConnection();
 	
 		peer.onicecandidate = (event) => { // 收到自己的candidate
 		  socketRef.current?.send(JSON.stringify({
+			userId: userIdRef.current,
+			username: 'KKT',
+			chatUserId: '111',
 			event: "candidate",
 			data: JSON.stringify(event.candidate), // 尝试里面不序列化是否可行
 		  }))
@@ -30,14 +44,17 @@ export default function Home() {
 	}
 
 	const createDataChannel = () => { // dataChannel创建
-		const channel = peerRef.current!.createDataChannel("KKTRoom_1");
+		const channel = peerRef.current!.createDataChannel("KKTRoom_0");
 	
 		channel.onopen = () => {
 		  console.log("[dataChannel open]");
+		  userIdRef.current = channel.id; // 打开之后才有id
 		}
 	
 		channel.onmessage = (event) => {
-		  console.log("[dataChannel message]", event.data);
+		  models.current.forEach(model=>{
+			rigFace(JSON.parse(event.data), 0.5, model);
+		})
 		}
 	
 		channel.onclose = () => {
@@ -68,6 +85,9 @@ export default function Home() {
 				  const answer = await peer?.createAnswer(); // 生成answer
 				  await peer?.setLocalDescription(answer); // 设置本地描述信息
 				  socketRef.current?.send(JSON.stringify({// 发送answer
+					userId: userIdRef.current,
+					username: 'KKT',
+					chatUserId: '111',
 					event: 'answer',
 					data: JSON.stringify(answer)
 				  }))
@@ -87,7 +107,7 @@ export default function Home() {
 		  };
 		  
 		  socket.onerror = (error) => { // 连接错误
-			console.log(`[error] 连接错误 ${error}`);
+			console.log(`[error] 连接错误 `, error);
 		  };
 	
 		  return socket;

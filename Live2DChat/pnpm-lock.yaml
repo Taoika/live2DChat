@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@improbable-eng/grpc-web':
-    specifier: ^0.15.0
-    version: 0.15.0(google-protobuf@3.21.2)
   '@mediapipe/camera_utils':
     specifier: ^0.3.1675466862
     version: 0.3.1675466862
@@ -22,10 +19,7 @@ dependencies:
     version: 6.5.10(@pixi/extensions@6.5.10)(@pixi/settings@6.5.10)
   '@reduxjs/toolkit':
     specifier: ^1.9.7
-    version: 1.9.7
-  grpc-web:
-    specifier: ^1.5.0
-    version: 1.5.0
+    version: 1.9.7(react@18.2.0)
   kalidokit:
     specifier: ^1.1.5
     version: 1.1.5
@@ -41,9 +35,6 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
-  ts-protoc-gen:
-    specifier: ^0.15.0
-    version: 0.15.0
 
 devDependencies:
   '@types/react':
@@ -573,15 +564,6 @@ packages:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
     dev: true
 
-  /@improbable-eng/grpc-web@0.15.0(google-protobuf@3.21.2):
-    resolution: {integrity: sha512-ERft9/0/8CmYalqOVnJnpdDry28q+j+nAlFFARdjyxXDJ+Mhgv9+F600QC8BR9ygOfrXRlAk6CvST2j+JCpQPg==}
-    peerDependencies:
-      google-protobuf: ^3.14.0
-    dependencies:
-      browser-headers: 0.4.1
-      google-protobuf: 3.21.2
-    dev: false
-
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
     engines: {node: '>=6.0.0'}
@@ -1103,7 +1085,7 @@ packages:
       url: 0.11.3
     dev: false
 
-  /@reduxjs/toolkit@1.9.7:
+  /@reduxjs/toolkit@1.9.7(react@18.2.0):
     resolution: {integrity: sha512-t7v8ZPxhhKgOKtU+uyJT13lu4vL7az5aFi4IdoDs/eS548edn2M8Ik9h8fxgvMjGoAUVFSt6ZC1P5cWmQ014QQ==}
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18
@@ -1115,6 +1097,7 @@ packages:
         optional: true
     dependencies:
       immer: 9.0.21
+      react: 18.2.0
       redux: 4.2.1
       redux-thunk: 2.4.2(redux@4.2.1)
       reselect: 4.1.8
@@ -1435,10 +1418,6 @@ packages:
     dependencies:
       fill-range: 7.0.1
     dev: true
-
-  /browser-headers@0.4.1:
-    resolution: {integrity: sha512-CA9hsySZVo9371qEHjHZtYxV2cFtVj5Wj/ZHi8ooEsrtm4vOnl9Y9HmyYWk9q+05d7K3rdoAE0j3MVEFVvtQtg==}
-    dev: false
 
   /browserslist@4.22.1:
     resolution: {integrity: sha512-FEVc202+2iuClEhZhrWy6ZiAcRLvNMyYcxZ8raemul1DYVOVdFsbqckWLdsixQZCpJlwe77Z3UTalE7jsjnKfQ==}
@@ -1964,10 +1943,6 @@ packages:
       pinkie-promise: 2.0.1
     dev: false
 
-  /google-protobuf@3.21.2:
-    resolution: {integrity: sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==}
-    dev: false
-
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -1981,10 +1956,6 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
-
-  /grpc-web@1.5.0:
-    resolution: {integrity: sha512-y1tS3BBIoiVSzKTDF3Hm7E8hV2n7YY7pO0Uo7depfWJqKzWE+SKr0jvHNIJsJJYILQlpYShpi/DRJJMbosgDMQ==}
-    dev: false
 
   /has-flag@3.0.0:
     resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
@@ -2664,13 +2635,6 @@ packages:
     dependencies:
       typescript: 5.2.2
     dev: true
-
-  /ts-protoc-gen@0.15.0:
-    resolution: {integrity: sha512-TycnzEyrdVDlATJ3bWFTtra3SCiEP0W0vySXReAuEygXCUr1j2uaVyL0DhzjwuUdQoW5oXPwk6oZWeA0955V+g==}
-    hasBin: true
-    dependencies:
-      google-protobuf: 3.21.2
-    dev: false
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
