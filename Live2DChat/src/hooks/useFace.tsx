@@ -16,10 +16,10 @@ const drawConnectors = _drawConnectors || win.drawConnectors
 const drawLandmarks = _drawLandmarks || win.drawLandmarks
 const FACEMESH_TESSELATION = _FACEMESH_TESSELATION || win.FACEMESH_TESSELATION
 
-/***
+/**
  * 获取 转换3D人脸数据为 L2D 数据
  */
-const useFace = (models: React.MutableRefObject<any[]>) => {
+const useFace = () => {
 
     const dispatch = useAppDispatch()
 
@@ -108,7 +108,7 @@ const useFace = (models: React.MutableRefObject<any[]>) => {
     // 3D转L2D
     const animateLive2DModel = (points: Results) => {
         const videoElement = videoRef.current
-        if (!models.current[0] || !points || !videoElement) return;
+        if (!points || !videoElement) return;
 
         // 存储人脸的动画参数
         let riggedFace: any;

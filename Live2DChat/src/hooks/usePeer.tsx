@@ -1,17 +1,19 @@
 import { useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hook";
-import { setUserModel } from "../store/slice/userInfo";
+import { setNeedRender } from "../store/slice/userInfo";
 const WS_URL = 'ws://120.24.255.77:30000/websocket'
 
-
+/**
+ * pper socket 的初始化
+ */
 const usePeer = () => {
 
     const dispatch = useAppDispatch();
-    const { userId, inRoom, userModel } = useAppSelector((state)=>state.userInfo)
+    const { userId, inRoom, needRender } = useAppSelector((state)=>state.userInfo)
 
     const socketRef = useRef<WebSocket>()
 	const peerRef = useRef<RTCPeerConnection>()
-    const userModelRef = useRef(userModel)
+    const userModelRef = useRef(needRender)
 
     const createPeer = () => { // peer创建
 
@@ -68,10 +70,14 @@ const usePeer = () => {
                     const data = msg.data;
                     console.log(`[ws message] 用户${data.userId}加入房间`);
                     
-                    dispatch(setUserModel([...userModelRef.current, {
+                    dispatch(setNeedRender([...userModelRef.current, {
                         userId: data.userId,
                         modelUrl: data.modelUrl
                     }]))
+                    break;
+                case 'ListRoom':
+                    console.log('[ListRoom]->', msg.data);
+                    
             }
                 
         };
@@ -97,8 +103,8 @@ const usePeer = () => {
     },[inRoom])
 
     useEffect(()=>{
-        userModelRef.current = userModel
-    },[userModel])
+        userModelRef.current = needRender
+    },[needRender])
 
     return { socketRef, peerRef }
 }

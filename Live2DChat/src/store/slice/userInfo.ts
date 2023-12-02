@@ -6,7 +6,8 @@ import { userModel } from '../../type/Live2d';
 const initialState = {
     userId: 0,
     inRoom: false,
-    userModel:<userModel[]> []
+    needRender:<userModel[]> [], // 尚未渲染的模型
+    rendered:<userModel[]> [] // 已经渲染的模型
 };
 
 // 用户数据
@@ -20,17 +21,20 @@ export const userInfoSlice = createSlice({
         setInRoom: (state, action: PayloadAction<boolean>) => {
             state.inRoom = action.payload;
         }, 
-        setUserModel: (state, action: PayloadAction<userModel[]>) => {
-            state.userModel = action.payload;
+        setNeedRender: (state, action: PayloadAction<userModel[]>) => {
+            state.needRender = action.payload;
+        },
+        setRendered: (state, action: PayloadAction<userModel[]>) => {
+            state.rendered = action.payload;
         }
     },
 });
 
-export const { setUserId, setUserModel, setInRoom } = userInfoSlice.actions
+export const { setUserId, setNeedRender, setInRoom, setRendered } = userInfoSlice.actions
 
 export const selectLive2dData = (state: RootState) => {
-    const { userId, userModel, inRoom } = state.userInfo;
-    return { userId, userModel, inRoom };
+    const { userId, needRender, inRoom, rendered } = state.userInfo;
+    return { userId, needRender, inRoom, rendered };
 }
 
 export default userInfoSlice.reducer

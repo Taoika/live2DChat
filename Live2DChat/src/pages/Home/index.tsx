@@ -11,26 +11,36 @@ export default function Home() {
 
 	const dispatch = useAppDispatch();
 	const { live2dData } = useAppSelector((state) => state.live2d)
-	const { inRoom } = useAppSelector((state) => state.userInfo)
+	const { inRoom, userId, rendered } = useAppSelector((state) => state.userInfo)
 
 	const dataChannel = useRef<RTCDataChannel>();
+	const userModelRef = useRef(rendered);
 
 	const { peerRef } = usePeer()
 	const { canvasRef, models } = usePixi()
-	const { videoRef, guideRef } = useFace(models)
+	const { videoRef, guideRef } = useFace()
+	
 
 	const createDataChannel = () => { // dataChannel创建
-		const channel = peerRef.current!.createDataChannel("KKTRoom_0");
+		const channel = peerRef.current!.createDataChannel("myDataChannel66666666_1395212519");
 	
 		channel.onopen = () => {
 		  console.log("[dataChannel open]");
-		  
 		}
 	
 		channel.onmessage = (event) => {
-		  models.current.forEach(model=>{
-			rigFace(JSON.parse(event.data), 0.5, model);
-		})
+			const { live2dData, userId } = JSON.parse(event.data);
+			let index = -1;
+			userModelRef.current.forEach((value, i)=>{ // 判断用户在userModel中的索引值
+				if(value.userId == userId){
+					index = i;
+					return ;
+				}
+			})
+			if(index != -1){
+			
+				rigFace(live2dData, 0.5, models.current[index])
+			}
 		}
 	 
 		channel.onclose = () => {
@@ -46,14 +56,17 @@ export default function Home() {
 
 	useEffect(()=>{ // 监听L2D数据更改
 		if(!live2dData || dataChannel.current?.readyState != 'open') return ;		
-		dataChannel.current?.send(JSON.stringify(live2dData))
-		
+		dataChannel.current?.send(JSON.stringify({live2dData, userId}))
 	},[live2dData])
 
-	useEffect(()=>{
+	useEffect(()=>{ // 监听用户是否在房间中
 		if(!inRoom || dataChannel.current) return;
 		dataChannel.current = createDataChannel();
 	},[inRoom])
+
+	useEffect(()=>{ // 监听用户模型数据变更
+		userModelRef.current = rendered
+	},[rendered]);
 
 	return (
 		<div className='Home'>
