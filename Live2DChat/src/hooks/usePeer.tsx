@@ -75,9 +75,6 @@ const usePeer = () => {
                         modelUrl: data.modelUrl
                     }]))
                     break;
-                case 'ListRoom':
-                    console.log('[ListRoom]->', msg.data);
-                    
             }
                 
         };

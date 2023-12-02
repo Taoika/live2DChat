@@ -72,11 +72,11 @@ const usePixi = () => {
             app.stage.addChild(model);
         })
 
-        dispatch(setRendered(needRender)); // 更新已渲染模型
+        dispatch(setRendered([...rendered,...needRender])); // 更新已渲染模型
         dispatch(setNeedRender([])); // 更新未渲染模型
     }
 
-    useEffect(()=>{ // 监听是否在房间中 是否有未渲染的模型
+    useEffect(()=>{ // 监听是否在房间中 是否有未渲染的模型 
         if(!inRoom || !needRender[0]) return 
         if(!rendered[0]){ // 没有已经渲染的模型            
             setPixi()

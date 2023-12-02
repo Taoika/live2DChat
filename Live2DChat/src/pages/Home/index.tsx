@@ -14,7 +14,7 @@ export default function Home() {
 	const { inRoom, userId, rendered } = useAppSelector((state) => state.userInfo)
 
 	const dataChannel = useRef<RTCDataChannel>();
-	const userModelRef = useRef(rendered);
+	const renderedRef = useRef(rendered);
 
 	const { peerRef } = usePeer()
 	const { canvasRef, models } = usePixi()
@@ -31,14 +31,15 @@ export default function Home() {
 		channel.onmessage = (event) => {
 			const { live2dData, userId } = JSON.parse(event.data);
 			let index = -1;
-			userModelRef.current.forEach((value, i)=>{ // 判断用户在userModel中的索引值
+			console.log(renderedRef.current.length);
+			
+			renderedRef.current.forEach((value, i)=>{ // 判断用户在userModel中的索引值
 				if(value.userId == userId){
 					index = i;
 					return ;
 				}
 			})
-			if(index != -1){
-			
+			if(index != -1){ // 找不到对应的用户
 				rigFace(live2dData, 0.5, models.current[index])
 			}
 		}
@@ -55,7 +56,7 @@ export default function Home() {
 	}
 
 	useEffect(()=>{ // 监听L2D数据更改
-		if(!live2dData || dataChannel.current?.readyState != 'open') return ;		
+		if(!live2dData || dataChannel.current?.readyState != 'open') return ;				
 		dataChannel.current?.send(JSON.stringify({live2dData, userId}))
 	},[live2dData])
 
@@ -65,7 +66,9 @@ export default function Home() {
 	},[inRoom])
 
 	useEffect(()=>{ // 监听用户模型数据变更
-		userModelRef.current = rendered
+		console.log('[rendered] ', rendered);
+		
+		renderedRef.current = rendered
 	},[rendered]);
 
 	return (
