@@ -30,9 +30,7 @@ export default function Home() {
 	
 		channel.onmessage = (event) => {
 			const { live2dData, userId } = JSON.parse(event.data);
-			let index = -1;
-			console.log(renderedRef.current.length);
-			
+			let index = -1;			
 			renderedRef.current.forEach((value, i)=>{ // 判断用户在userModel中的索引值
 				if(value.userId == userId){
 					index = i;
@@ -65,9 +63,7 @@ export default function Home() {
 		dataChannel.current = createDataChannel();
 	},[inRoom])
 
-	useEffect(()=>{ // 监听用户模型数据变更
-		console.log('[rendered] ', rendered);
-		
+	useEffect(()=>{ // 监听用户模型数据变更		
 		renderedRef.current = rendered
 	},[rendered]);
 

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hook";
 import { setNeedRender } from "../store/slice/userInfo";
 const WS_URL = 'ws://120.24.255.77:30000/websocket'
+// const WS_URL = 'wss://qgailab.com/websocket'
 
 /**
  * pper socket 的初始化
@@ -70,10 +71,21 @@ const usePeer = () => {
                     const data = msg.data;
                     console.log(`[ws message] 用户${data.userId}加入房间`);
                     
-                    dispatch(setNeedRender([...userModelRef.current, {
+                    dispatch(setNeedRender([...userModelRef.current, { // 添加需要未渲染的模型
                         userId: data.userId,
                         modelUrl: data.modelUrl
                     }]))
+                    break;
+                case 'listUser':
+                    console.log(`[ws message] 收到房间中的用户信息`);
+                    const userModelList = msg.data
+                    .map((value: any) => ({userId: value.userId, modelUrl: value.modelUrl})) // 格式化
+                    .filter((value: any) => value.userId != '') // 过滤空userId
+
+                    if(!userModelList[0]) break; // 一个新模型都没有
+
+                    dispatch(setNeedRender([...userModelRef.current, ...userModelList]))
+                
                     break;
             }
                 
@@ -101,6 +113,7 @@ const usePeer = () => {
 
     useEffect(()=>{
         userModelRef.current = needRender
+        
     },[needRender])
 
     return { socketRef, peerRef }

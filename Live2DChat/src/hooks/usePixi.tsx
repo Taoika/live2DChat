@@ -63,6 +63,7 @@ const usePixi = () => {
     const updateModel = (app: Application) => { // 模型数据更新
         const modelUrlList = getUrlList(needRender)
         
+        
         // 模型
         modelUrlList.forEach(async modelUrl => {
             const model = await createModel(modelUrl, [window.innerWidth * 0.2, window.innerHeight * 0.9], 0.4);
