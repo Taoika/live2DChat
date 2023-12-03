@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hook";
 import { setNeedRender } from "../store/slice/userInfo";
-const WS_URL = 'ws://120.24.255.77:30000/websocket'
-// const WS_URL = 'wss://qgailab.com/websocket'
+// const WS_URL = 'ws://120.24.255.77:30000/websocket'
+const WS_URL = 'wss://qgailab.com/websocket'
 
 /**
  * pper socket 的初始化
