@@ -1,18 +1,19 @@
 import { useEffect, useRef, useContext } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hook";
-import { setNeedRender } from "../store/slice/userInfo";
-import App, { AppContext } from "../App";
+import { useAppSelector } from "../../store/hook";
+import { AppContext } from "../../App";
+import useSocketHandle from "./useSocketHandle";
 
 // const WS_URL = 'ws://120.24.255.77:30000/websocket'
 const WS_URL = 'wss://qgailab.com/websocket'
 
 const useSocket = () => {
 
-    const dispatch = useAppDispatch();
     const { userId, inRoom, needRender } = useAppSelector((state)=>state.userInfo)
 
-    const { peerRef, socketRef } = useContext(AppContext)!
+    const { socketRef } = useContext(AppContext)!
     const userModelRef = useRef(needRender)
+
+    const { handleOffer, handleCandidate, handleEnterRoom, handleListUser }  = useSocketHandle();
 
     const createSocket = ()=>{ // socket创建
 
@@ -28,45 +29,20 @@ const useSocket = () => {
             switch(msg.event){
                 case 'offer':
                     console.log('[ws message] 收到offer');
-                    const offer = JSON.parse(msg.data);
-                    const peer = peerRef.current
-
-                    await peer?.setRemoteDescription(offer); // 设置远端描述信息
-
-                    const answer = await peer?.createAnswer(); // 生成answer
-                    await peer?.setLocalDescription(answer); // 设置本地描述信息
-                    socket.send(JSON.stringify({// 发送answer
-                        userId: userId.toString(),
-                        username: 'KKT',
-                        event: 'answer',
-                        data: JSON.stringify(answer)
-                    }))
-                    console.log('发送answer');
+                    handleOffer(JSON.parse(msg.data))
                     break;
                 case 'candidate':
                     console.log('[ws message] 收到candidate');
-                    const candidate = JSON.parse(msg.data);
-                    peerRef.current?.addIceCandidate(candidate);
+                    handleCandidate(JSON.parse(msg.data))
                     break;
                 case 'enterRoom':
                     const data = msg.data;
                     console.log(`[ws message] 用户${data.userId}加入房间`);
-                    
-                    dispatch(setNeedRender([...userModelRef.current, { // 添加需要未渲染的模型
-                        userId: data.userId,
-                        modelUrl: data.modelUrl
-                    }]))
+                    handleEnterRoom(data)
                     break;
                 case 'listUser':
                     console.log(`[ws message] 收到房间中的用户信息`);
-                    const userModelList = msg.data
-                    .map((value: any) => ({userId: value.userId, modelUrl: value.modelUrl})) // 格式化
-                    .filter((value: any) => value.userId != '') // 过滤空userId
-
-                    if(!userModelList[0]) break; // 一个新模型都没有
-
-                    dispatch(setNeedRender([...userModelRef.current, ...userModelList]))
-                
+                    handleListUser(msg.data);
                     break;
             }
                 

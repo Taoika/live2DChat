@@ -36,8 +36,6 @@ const usePeer = () => {
         peerRef.current = createPeer();
     },[inRoom])
 
-
-
     return { peerRef }
 }
 
