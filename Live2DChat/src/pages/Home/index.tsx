@@ -1,3 +1,4 @@
+import { useRef, useContext } from 'react';
 import './index.scss'
 import usePixi from '../../hooks/usePixi';
 import useFace from '../../hooks/useFace';
@@ -8,23 +9,26 @@ import useSocket from '../../hooks/socket/useSocket';
 import { useAppDispatch } from "../../store/hook";
 import { setInRoom } from '../../store/slice/userInfo';
 
+import { AppContext } from '../../App';
+
+
 export default function Home() {
 
 	const dispatch = useAppDispatch();
-
-	usePeer()
+	const { localAudioRef } = usePeer()
 	useSocket()
-
 	const { canvasRef, models } = usePixi()
 	const { videoRef, guideRef } = useFace()
 	useDataChannel(models)
 
-	const joinRoom = () => { // 加入房间
+	const joinRoom = async () => { // 加入房间
 		dispatch(setInRoom(true));
 	}
 
 	return (
 		<div className='Home'>
+			<div className="remoteAudioContainer"></div>
+			<audio src="" ref={localAudioRef}></audio>
 			<button onClick={joinRoom}>加入房间</button>
 			<canvas className='L2Dmodel' ref={canvasRef}></canvas>
 			<div className="preview">

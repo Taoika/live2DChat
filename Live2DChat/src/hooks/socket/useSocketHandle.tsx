@@ -32,7 +32,7 @@ const useHandleOffer = () => {
             event: 'answer',
             data: JSON.stringify(answer)
         }))
-        console.log('发送answer');
+        console.log('[ws send] 发送answer');
     }
 
     const handleCandidate = (candidate: any) => { // 收到candidate的处理
