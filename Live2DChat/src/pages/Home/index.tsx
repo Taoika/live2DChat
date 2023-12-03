@@ -8,7 +8,6 @@ import useSocket from '../../hooks/socket/useSocket';
 import { useAppDispatch } from "../../store/hook";
 import { setInRoom } from '../../store/slice/userInfo';
 
-
 export default function Home() {
 
 	const dispatch = useAppDispatch();
@@ -22,11 +21,17 @@ export default function Home() {
 		dispatch(setInRoom(true));
 	}
 
+	const exitRoom = () => { // 退出房间
+		dispatch(setInRoom(false));
+		
+	}
+
 	return (
 		<div className='Home'>
 			<div className="remoteAudioContainer"></div>
 			<audio src="" ref={localAudioRef}></audio>
 			<button onClick={joinRoom}>加入房间</button>
+			<button onClick={exitRoom}>退出房间</button>
 			<canvas className='L2Dmodel' ref={canvasRef}></canvas>
 			<div className="preview">
 				<video className="input_video" ref={videoRef}></video>

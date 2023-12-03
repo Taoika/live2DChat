@@ -7,6 +7,7 @@ const initialState = {
     userId: 0,
     inRoom: false,
     needRender:<userModel[]> [], // 尚未渲染的模型
+    needUninst:<userModel[]> [], // 需要卸载的模型
     rendered:<userModel[]> [] // 已经渲染的模型
 };
 
@@ -26,15 +27,18 @@ export const userInfoSlice = createSlice({
         },
         setRendered: (state, action: PayloadAction<userModel[]>) => {
             state.rendered = action.payload;
-        }
+        },
+        setNeedUnist: (state, action: PayloadAction<userModel[]>) => {
+            state.needUninst = action.payload;
+        },
     },
 });
 
-export const { setUserId, setNeedRender, setInRoom, setRendered } = userInfoSlice.actions
+export const { setUserId, setNeedRender, setInRoom, setRendered, setNeedUnist } = userInfoSlice.actions
 
 export const selectLive2dData = (state: RootState) => {
-    const { userId, needRender, inRoom, rendered } = state.userInfo;
-    return { userId, needRender, inRoom, rendered };
+    const { userId, needRender, inRoom, rendered, needUninst } = state.userInfo;
+    return { userId, needRender, inRoom, rendered, needUninst };
 }
 
 export default userInfoSlice.reducer

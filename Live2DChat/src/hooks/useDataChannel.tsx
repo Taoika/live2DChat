@@ -53,8 +53,17 @@ const useDataChannel = (
 	},[live2dData])
 
 	useEffect(()=>{ // 监听用户是否在房间中
-		if(!inRoom || dataChannel.current) return;
-		dataChannel.current = createDataChannel();
+        if(inRoom && !dataChannel.current){ // 刚进入房间
+            dataChannel.current = createDataChannel();
+            return ;
+        }
+        if(!inRoom && dataChannel.current) { // 退出房间
+            dataChannel.current.close();
+            dataChannel.current = undefined;
+            console.log('[exit Room] channel清空');
+            return;
+        }
+		
 	},[inRoom])
 
     useEffect(()=>{ // 监听用户模型数据变更		

@@ -24,12 +24,9 @@ const usePeer = () => {
                 event: "candidate",
                 data: JSON.stringify(event.candidate), // 尝试里面不序列化是否可行
             }))
-            console.log('[ws send] 发送candidate');
         }
 
         peer.ontrack = (event) => { // 收到对方的流轨道
-            console.log('收到对方的数据流');
-            
             const audio = document.createElement('audio');
             audio.srcObject = event.streams[0];
             audio.autoplay = true,
@@ -61,17 +58,24 @@ const usePeer = () => {
         const stream = await getLocalStream();
 
 		stream.getTracks().forEach((track) => {
-			peerRef.current?.addTrack(track, stream);
-			console.log('推送本地音频流');
-			
+			peerRef.current?.addTrack(track, stream);			
 		})
     }
 
     useEffect(()=>{ // 自己进入房间
-        if(!inRoom || peerRef.current) return ;
+        if(inRoom && !peerRef.current){ // 刚进入房间
+            handleLocalStream()
+            peerRef.current = createPeer();
+            return ;
+        }
+        if(!inRoom && peerRef.current){
+            peerRef.current.close();
+            peerRef.current = undefined;
+            console.log('[exit Room] peer清空');
+            return ;
+        }
 
-        handleLocalStream()
-        peerRef.current = createPeer();
+
     },[inRoom])
 
     return { localAudioRef }

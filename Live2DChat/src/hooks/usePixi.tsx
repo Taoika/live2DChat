@@ -5,7 +5,7 @@ import { Ticker, TickerPlugin } from '@pixi/ticker';
 import { Live2DModel } from 'pixi-live2d-display/cubism4';
 import { createPixi, createModel } from '../utils/model';
 import { useAppSelector, useAppDispatch } from '../store/hook';
-import { setRendered, setNeedRender } from '../store/slice/userInfo';
+import { setRendered, setNeedRender, setNeedUnist } from '../store/slice/userInfo';
 import { userModel } from '../type/Live2d';
 
 // 为 Live2DModel 注册 Ticker
@@ -21,7 +21,7 @@ Application.registerPlugin(TickerPlugin);
 const usePixi = () => {
 
     const dispatch = useAppDispatch()
-    const { inRoom, needRender, rendered } = useAppSelector((state) => state.userInfo)
+    const { inRoom, needRender, rendered, needUninst } = useAppSelector((state) => state.userInfo)
 
     const canvasRef = useRef<HTMLCanvasElement>(null); // 模型渲染区域
     const models = useRef<any[]>([]); // 模型数组
@@ -58,6 +58,7 @@ const usePixi = () => {
     }
 
     const updateModel = (app: Application) => { // 模型数据更新
+        
         const modelUrlList = getUrlList(needRender)
         
         // 模型
@@ -74,15 +75,41 @@ const usePixi = () => {
     }
 
     useEffect(()=>{ // 监听是否在房间中 是否有未渲染的模型 
-        if(!inRoom || !needRender[0]) return 
+
+        if(!inRoom && appRef.current){ // 退出房间 模型移除 结束
+            appRef.current?.stage.removeChildren()
+            return ;
+        }
+        if(!needRender[0]) return  // 没有需要渲染的模型 结束
+
         if(!rendered[0]){ // 没有已经渲染的模型            
-            setPixi()
+            setPixi() // 初始化
         }
         else {
-            updateModel(appRef.current!);
+            updateModel(appRef.current!); // 模型更新
         }
         
     },[inRoom, needRender])
+
+    useEffect(()=>{
+
+        if(!needUninst[0]) return;
+
+        needUninst.forEach(uni => { // 遍历 uni
+            rendered.forEach((ren, index) => { // 遍历ren
+                if(ren.userId == uni.userId){ // 相同id
+                    appRef.current?.stage.removeChild(models.current[index]); // app模型卸载
+                    models.current.splice(index, 1); // models 删除指定索引值
+                    dispatch(setRendered(rendered.slice(0, index).concat(rendered.slice(index+1)))); // 已渲染模型更新
+                    return;
+                }
+            })
+            
+            
+        })
+
+        dispatch(setNeedUnist([]));
+    },[needUninst]);
 
     return { canvasRef, models }
 }
