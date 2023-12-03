@@ -64,8 +64,7 @@ const usePixi = () => {
         // 模型
         modelUrlList.forEach(async modelUrl => {
             const model = await createModel(modelUrl, [window.innerWidth * 0.2, window.innerHeight * 0.9], 0.4);
-            models.current.push(model)
-
+            models.current.push(model);
             // pixi配置模型
             app.stage.addChild(model);
         })
@@ -78,6 +77,7 @@ const usePixi = () => {
 
         if(!inRoom && appRef.current){ // 退出房间 模型移除 结束
             appRef.current?.stage.removeChildren()
+            models.current = [];
             return ;
         }
         if(!needRender[0]) return  // 没有需要渲染的模型 结束
@@ -91,24 +91,24 @@ const usePixi = () => {
         
     },[inRoom, needRender])
 
-    useEffect(()=>{
+    useEffect(()=>{ // 监听 needUninst
 
         if(!needUninst[0]) return;
 
         needUninst.forEach(uni => { // 遍历 uni
             rendered.forEach((ren, index) => { // 遍历ren
                 if(ren.userId == uni.userId){ // 相同id
+                    
                     appRef.current?.stage.removeChild(models.current[index]); // app模型卸载
                     models.current.splice(index, 1); // models 删除指定索引值
+                    
                     dispatch(setRendered(rendered.slice(0, index).concat(rendered.slice(index+1)))); // 已渲染模型更新
                     return;
                 }
             })
-            
-            
         })
 
-        dispatch(setNeedUnist([]));
+        dispatch(setNeedUnist([])); // 需要卸载模型 清空
     },[needUninst]);
 
     return { canvasRef, models }
