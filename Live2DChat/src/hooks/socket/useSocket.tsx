@@ -9,11 +9,9 @@ const WS_URL = 'wss://qgailab.com/websocket'
 const useSocket = () => {
 
     const { userId, inRoom, needRender } = useAppSelector((state)=>state.userInfo)
-
+    const { handleOffer, handleCandidate, handleEnterRoom, handleListUser, heartCheck }  = useSocketHandle(); // ws处理函数
     const { socketRef } = useContext(AppContext)!
     const userModelRef = useRef(needRender)
-
-    const { handleOffer, handleCandidate, handleEnterRoom, handleListUser }  = useSocketHandle();
 
     const createSocket = ()=>{ // socket创建
 
@@ -21,6 +19,7 @@ const useSocket = () => {
         const socket = new WebSocket(`${WS_URL}?userId=${userId}`) // 信令服务器连接
         socket.onopen = () => { // 连接建立
             console.log("[ws open] 连接已建立");
+            heartCheck(socket);// 心跳处理
         };
         
         socket.onmessage = async (event) => { // 接收到服务器的信息
