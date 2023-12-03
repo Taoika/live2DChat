@@ -28,6 +28,8 @@ const usePeer = () => {
         }
 
         peer.ontrack = (event) => { // 收到对方的流轨道
+            console.log('收到对方的数据流');
+            
             const audio = document.createElement('audio');
             audio.srcObject = event.streams[0];
             audio.autoplay = true,
@@ -57,8 +59,6 @@ const usePeer = () => {
 
     const handleLocalStream = async () => { // 获取 处理本地音频流
         const stream = await getLocalStream();
-		localAudioRef.current!.srcObject = stream;
-		localAudioRef.current!.play();
 
 		stream.getTracks().forEach((track) => {
 			peerRef.current?.addTrack(track, stream);
@@ -69,7 +69,7 @@ const usePeer = () => {
 
     useEffect(()=>{ // 自己进入房间
         if(!inRoom || peerRef.current) return ;
-        
+
         handleLocalStream()
         peerRef.current = createPeer();
     },[inRoom])

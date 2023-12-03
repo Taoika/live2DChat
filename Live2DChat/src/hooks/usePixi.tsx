@@ -31,7 +31,6 @@ const usePixi = () => {
         return userModelList.map(usermodel => usermodel.modelUrl)
     }
 
-    
     const setPixi = async () => { // pixi初始化
         
         // 创建pixi应用
@@ -56,13 +55,10 @@ const usePixi = () => {
         });
 
         appRef.current = app; // 更新app
-        
-
     }
 
     const updateModel = (app: Application) => { // 模型数据更新
         const modelUrlList = getUrlList(needRender)
-        
         
         // 模型
         modelUrlList.forEach(async modelUrl => {
