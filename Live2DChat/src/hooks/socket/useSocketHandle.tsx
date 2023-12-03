@@ -10,14 +10,6 @@ const useHandleOffer = () => {
 
     const { peerRef, socketRef } = useContext(AppContext)!
     const userModelRef = useRef(needRender)
-
-    let heartTimer = 0; //心跳定时器id
-
-    const heartCheck = (socket: WebSocket) => { // 心跳检查
-        heartTimer = setInterval(()=>{ // 建立定时器 只能建立一次 或者是建立了下一个就将上一个销毁
-          socket.send(JSON.stringify({"event": "heartBeat"}));
-        }, 30000);
-    }
     
     const handleOffer = async (offer: any) => { // 收到offer的处理
         const peer = peerRef.current
@@ -57,7 +49,7 @@ const useHandleOffer = () => {
         dispatch(setNeedRender([...userModelRef.current, ...userModelList]))
     }
 
-    return { handleOffer, handleCandidate, handleEnterRoom, handleListUser, heartCheck } 
+    return { handleOffer, handleCandidate, handleEnterRoom, handleListUser } 
 }
 
 export default useHandleOffer;

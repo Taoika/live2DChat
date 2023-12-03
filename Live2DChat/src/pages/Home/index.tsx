@@ -1,4 +1,3 @@
-import { useRef, useContext } from 'react';
 import './index.scss'
 import usePixi from '../../hooks/usePixi';
 import useFace from '../../hooks/useFace';
@@ -8,8 +7,6 @@ import useSocket from '../../hooks/socket/useSocket';
 
 import { useAppDispatch } from "../../store/hook";
 import { setInRoom } from '../../store/slice/userInfo';
-
-import { AppContext } from '../../App';
 
 
 export default function Home() {
