@@ -16,7 +16,7 @@ Application.registerPlugin(TickerPlugin);
 
 /**
  * 将模型加载到pixi、放置到屏幕上
- * return: canvasRef 模型渲染的div的ref models 模型数组
+ * @returns  canvasRef 模型渲染的div的ref models 模型数组
  */
 const usePixi = () => {
 

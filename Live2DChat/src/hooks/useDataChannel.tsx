@@ -1,16 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import { useAppSelector } from "../store/hook";
 import { rigFace } from '../utils/model';
+import { AppContext } from "../App";
 
-
+/**
+ * 数据通道初始化
+ * @param peerRef peer
+ * @param models 模型数组
+ */
 const useDataChannel = (
-    peerRef: React.MutableRefObject<RTCPeerConnection | undefined>,
     models: React.MutableRefObject<any[]>
 ) => {
 
     const { live2dData } = useAppSelector((state) => state.live2d)
 	const { inRoom, userId, rendered } = useAppSelector((state) => state.userInfo)
 
+    const { peerRef } = useContext(AppContext)!
     const dataChannel = useRef<RTCDataChannel>();
     const renderedRef = useRef(rendered);
 

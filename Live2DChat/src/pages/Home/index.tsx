@@ -3,19 +3,22 @@ import usePixi from '../../hooks/usePixi';
 import useFace from '../../hooks/useFace';
 import usePeer from '../../hooks/usePeer';
 import useDataChannel from '../../hooks/useDataChannel';
+import useSocket from '../../hooks/useSocket';
 
 import { useAppDispatch } from "../../store/hook";
 import { setInRoom } from '../../store/slice/userInfo';
+
 
 
 export default function Home() {
 
 	const dispatch = useAppDispatch();
 
-	const { peerRef } = usePeer()
+	usePeer()
+	useSocket()
 	const { canvasRef, models } = usePixi()
 	const { videoRef, guideRef } = useFace()
-	useDataChannel(peerRef, models)
+	useDataChannel(models)
 
 	const joinRoom = () => { // 加入房间
 		dispatch(setInRoom(true));

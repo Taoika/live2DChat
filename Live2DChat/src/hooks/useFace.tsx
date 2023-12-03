@@ -16,6 +16,7 @@ const FACEMESH_TESSELATION = _FACEMESH_TESSELATION || win.FACEMESH_TESSELATION
 
 /**
  * 获取 转换3D人脸数据为 L2D 数据
+ * @returns 视频DOM
  */
 const useFace = () => {
 
