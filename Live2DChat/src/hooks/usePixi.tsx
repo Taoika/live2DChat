@@ -60,10 +60,15 @@ const usePixi = () => {
     const updateModel = (app: Application) => { // 模型数据更新
         
         const modelUrlList = getUrlList(needRender)
+
+        const length = rendered.length
         
         // 模型
+        var index = 1;
         modelUrlList.forEach(async modelUrl => {
-            const model = await createModel(modelUrl, [window.innerWidth * 0.2, window.innerHeight * 0.9], 0.4);
+            
+            var width = (length + index++) * 0.2 * window.innerWidth
+            const model = await createModel(modelUrl, [width, window.innerHeight * 0.5], 0.1);
             models.current.push(model);
             // pixi配置模型
             app.stage.addChild(model);
