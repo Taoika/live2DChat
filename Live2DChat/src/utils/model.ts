@@ -12,6 +12,7 @@ export const createPixi = (canvas: HTMLCanvasElement | null) => {
         backgroundAlpha: 0,
         backgroundColor: 0xffffff,
         resizeTo: window,
+        transparent: true,
     })
 }
 
@@ -42,16 +43,32 @@ export const draggable = (model: any) => {
         model.dragging = false;
     });
 
-    model.on("pointermove", (e: any) => { // 移动		
+    model.on("pointermove", (e: any) => { // 移动		 
         if (model.dragging) {
             model.position.set(e.data.global.x - model.offsetX, e.data.global.y - model.offsetY);
         }
     });
 
-    model.on('scroll', (e: any) => { // 滚轮
-        model.scale.set(clamp(model.scale.x + e.deltaY * -0.001, -0.5, 10)); 
+    model.on('scroll', async (e: any) => { // 滚轮
+        console.log("x = ",model.scale._x, "y =", model.scale._y);
+        if (model.scale._x < 0.05) {
+            model.scale.set(0.05)
+            return 
+        }
+
+        if (model.scale._x < 0 || model.scale._y < 0) {
+            model.scale.set(0.05)
+            return 
+        }
+
+        if(model.scale._y > 0.13 || model.scale._x > 0.13) {
+            model.scale.set(0.13)
+            return 
+        }
+        
+        await model.scale.set(clamp(model.scale.x + e.deltaY * -0.000006, -0.5, 10)); 
     });
-}
+}   
 
 // 更新 live2d 模型内部状态
 export const rigFace = (result: any, lerpAmount = 0.7, model: any) => {

@@ -6,15 +6,7 @@ import Home from './pages/Home'
 import { ConfigProvider } from 'antd';
 import { Layout, Space } from 'antd';
 
-const { Header, Footer, Sider, Content } = Layout;
-const headerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  height: 64,
-  paddingInline: 50,
-  lineHeight: '64px',
-  backgroundColor: '#7dbcea',
-};
+const { Content } = Layout;
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -24,19 +16,6 @@ const contentStyle: React.CSSProperties = {
   backgroundColor: '#108ee9',
   backgroundImage: 'url("https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/vs1111111.jpg")',
   backgroundSize: 'cover' ,
-};
-
-const siderStyle: React.CSSProperties = {
-  textAlign: 'center',
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#3ba0e9',
-};
-
-const footerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#7dbcea',
 };
 
 export const AppContext = createContext<{
