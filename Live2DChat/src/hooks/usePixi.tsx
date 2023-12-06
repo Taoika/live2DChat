@@ -61,7 +61,7 @@ const usePixi = () => {
         
         const modelUrlList = getUrlList(needRender)
 
-        const length = rendered.length
+        const length = models.current.length
         
         // 模型
         var index = 1;
