@@ -50,7 +50,6 @@ export const draggable = (model: any) => {
     });
 
     model.on('scroll', async (e: any) => { // 滚轮
-        console.log("x = ",model.scale._x, "y =", model.scale._y);
         if (model.scale._x < 0.05) {
             model.scale.set(0.05)
             return 
@@ -61,8 +60,8 @@ export const draggable = (model: any) => {
             return 
         }
 
-        if(model.scale._y > 0.13 || model.scale._x > 0.13) {
-            model.scale.set(0.13)
+        if(model.scale._y > 0.15 || model.scale._x > 0.15) {
+            model.scale.set(0.15)
             return 
         }
         
