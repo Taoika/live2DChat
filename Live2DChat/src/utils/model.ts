@@ -10,7 +10,7 @@ export const createPixi = (canvas: HTMLCanvasElement | null) => {
         view: canvas ? canvas : undefined,
         autoStart: true,
         backgroundAlpha: 0,
-        backgroundColor: 0xffffff,
+        backgroundColor: 0x00000000,
         resizeTo: window,
         transparent: true,
     })
