@@ -11,7 +11,9 @@ export const createPixi = (canvas: HTMLCanvasElement | null) => {
         autoStart: true,
         backgroundAlpha: 0,
         backgroundColor: 0x00000000,
-        resizeTo: window,
+        // resizeTo: window,
+        width: window.innerWidth,
+        height: window.innerHeight - 150,
         transparent: true,
     })
 }
