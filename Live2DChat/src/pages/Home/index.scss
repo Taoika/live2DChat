@@ -1,9 +1,18 @@
 .Home {
     width: 100vw;
     height: 100vh;
+
     canvas {
         display: block;
     }
+
+    @media (max-width: 768px) {
+        .preview {
+            width: 40%;
+            height: auto;
+        }
+    }
+
     .preview {
         display: flex;
         flex-direction: column;
@@ -13,14 +22,16 @@
         overflow: hidden;
         border-radius: 8px;
         background: #222;
+
         video {
             max-width: 400px;
             height: auto;
             transform: scale(-1, 1);
         }
+
         .input_video {
             width: "1280px";
-             height: "720px";
+            height: "720px";
         }
 
         canvas {

@@ -9,7 +9,7 @@ import { useAppDispatch } from "../../store/hook";
 import { setInRoom, setUserId } from '../../store/slice/userInfo';
 import { Button } from 'antd';
 import {notice} from "../../utils/notice"
-import { useRef } from 'react';
+import { useRef} from 'react';
 
 export default function Home() {
 
@@ -19,6 +19,7 @@ export default function Home() {
 	const { canvasRef, models } = usePixi()
 	const { videoRef, guideRef } = useFace()
 	const ifInRoom = useRef<Boolean>(false)
+
 	useDataChannel(models)
 
 	const joinRoom = async () => { // 加入房间
@@ -40,9 +41,8 @@ export default function Home() {
 			await exitRoom()
 			dispatch(setUserId(new Date().getTime()));
 			setTimeout(async () => {
-				console.log(111);
 				joinRoom()
-			}, 1000);
+			}, 1200);
 
 		} catch (error) {
 			console.error('发生错误:', error);
@@ -53,14 +53,17 @@ export default function Home() {
 		<div className='Home'>
 			<div className="remoteAudioContainer"></div>
 			<audio src="" ref={localAudioRef}></audio>
+			{/* <Input style={{ width: '120px' }} value={inputTempUserId} onChange={handleInputChange} /> */}
 			<Button type="primary" onClick={joinRoom}>加入房间</Button>
 			<Button type="primary" onClick={exitRoom}>退出房间</Button>
 			<Button type="primary" onClick={changeModel}>更换模型</Button>
+			
 			<canvas className='L2Dmodel' ref={canvasRef}></canvas>
 			<div className="preview">
-				<video className="input_video" ref={videoRef}></video>
+				<video className="input_video" ref={videoRef} ></video>
 				<canvas className="guides" ref={guideRef}></canvas>
 			</div>
+			
 		</div>
 	)
 }

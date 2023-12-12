@@ -68,7 +68,13 @@ const usePixi = () => {
         modelUrlList.forEach(async modelUrl => {
             
             var width = (length + index++) * 0.2 * window.innerWidth
-            const model = await createModel(modelUrl, [width, window.innerHeight * 0.5], 0.1);
+            var scale = 0.1
+            var height = window.innerHeight * 0.5
+            if (window.screen.width < 480) {
+                scale = 0.05
+                height = window.innerHeight * 0.2
+            }
+            const model = await createModel(modelUrl, [width, height], scale);
             models.current.push(model);
             // pixi配置模型
             app.stage.addChild(model);

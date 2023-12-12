@@ -14,8 +14,11 @@ const contentStyle: React.CSSProperties = {
   lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#108ee9',
-  backgroundImage: 'url("https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/vs1111111.jpg")',
-  backgroundSize: 'cover' ,
+  backgroundImage: 'url("https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/bg3.png")',
+  backgroundSize: 'cover', // 将背景图片等比缩放并铺满整个容器
+  backgroundPosition: 'center', // 让背景图片在容器中居中显示
+  backgroundRepeat: 'no-repeat',
+
 };
 
 export const AppContext = createContext<{
