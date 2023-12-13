@@ -15,9 +15,11 @@
     "@mediapipe/face_mesh": "^0.4.1633559619",
     "@pixi/ticker": "6.5.10",
     "@reduxjs/toolkit": "^1.9.7",
+    "antd": "^5.12.1",
     "kalidokit": "^1.1.5",
     "pixi-live2d-display": "^0.4.0",
     "pixi.js": "6.5.10",
+    "pnpm": "^8.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

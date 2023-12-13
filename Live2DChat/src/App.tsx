@@ -3,6 +3,23 @@ import './App.css'
 import { useAppSelector, useAppDispatch } from './store/hook';
 import { setUserId } from './store/slice/userInfo';
 import Home from './pages/Home'
+import { ConfigProvider } from 'antd';
+import { Layout, Space } from 'antd';
+
+const { Content } = Layout;
+
+const contentStyle: React.CSSProperties = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#108ee9',
+  backgroundImage: 'url("https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/bg3.png")',
+  backgroundSize: 'cover', // 将背景图片等比缩放并铺满整个容器
+  backgroundPosition: 'center', // 让背景图片在容器中居中显示
+  backgroundRepeat: 'no-repeat',
+
+};
 
 export const AppContext = createContext<{
   socketRef: React.MutableRefObject<WebSocket | undefined>,
@@ -18,16 +35,26 @@ function App() {
   const socketRef = useRef<WebSocket>()
   const peerRef = useRef<RTCPeerConnection>()
 
-  useEffect(()=>{ // 用户身份验证
-    if(userId) return ;
+  useEffect(() => { // 用户身份验证
+    if (userId) return;
     dispatch(setUserId(new Date().getTime()));
-    
-  },[])
+
+  }, [])
 
   return (
-    <AppContext.Provider value={{socketRef, peerRef}}>
+    <AppContext.Provider value={{ socketRef, peerRef }}>
       <div className='App'>
-        <Home></Home>
+        <ConfigProvider theme={{ token: { colorPrimary: '#00b96b' } }}>
+          <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
+            <Layout>
+              <Layout hasSider>
+                <Content style={contentStyle}><Home></Home></Content>
+                {/* <Sider style={siderStyle}>Sider</Sider> */}
+              </Layout>
+            </Layout>
+          </Space>
+
+        </ConfigProvider>
       </div>
     </AppContext.Provider>
   )
