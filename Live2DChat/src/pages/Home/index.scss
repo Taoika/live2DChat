@@ -1,12 +1,18 @@
 .Home {
     width: 100vw;
     height: 100vh;
+    text-align: center;
+    min-height: 120px;
+    line-height: 120px;
+    color: #fff;
+    background: #108ee9 url("https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/bg3.png") no-repeat center;
+    background-size: cover; // 将背景图片等比缩放并铺满整个容器
 
     canvas {
         display: block;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 768px) { // 适配移动端
         .preview {
             width: 40%;
             height: auto;

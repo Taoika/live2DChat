@@ -1,6 +1,7 @@
 import { TFace } from "kalidokit"
 import { live2d } from "../type/Live2d"
 
+// TFace转化成普通对象
 export const typeTransform = (face: TFace): live2d => {
     return {
         brow: face.brow,

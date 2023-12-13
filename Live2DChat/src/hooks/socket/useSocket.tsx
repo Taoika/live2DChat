@@ -12,16 +12,7 @@ const useSocket = () => {
     const { handleOffer, handleCandidate, handleEnterRoom, handleListUser, handleExitRoom } = useSocketHandle(); // ws处理函数
     const { socketRef } = useContext(AppContext)!
 
-
-    // let heartTimer = 0; //心跳定时器id
-
-    // const heartCheck = (socket: WebSocket) => { // 心跳检查
-    //     heartTimer = setInterval(()=>{ // 建立定时器 只能建立一次 或者是建立了下一个就将上一个销毁
-    //       socket.send(JSON.stringify({"event": "heartBeat"}));
-    //     }, 30000);
-    // }
-
-    let heartTimer: NodeJS.Timeout | number = 0; // 心跳定时器 ID
+    let heartTimer = 0; // 心跳定时器 ID
 
     const heartCheck = (socket: WebSocket) => { // 心跳检查
         clearInterval(heartTimer); // 先清除之前的定时器

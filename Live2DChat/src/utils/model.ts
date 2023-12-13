@@ -10,11 +10,10 @@ export const createPixi = (canvas: HTMLCanvasElement | null) => {
         view: canvas ? canvas : undefined,
         autoStart: true,
         backgroundAlpha: 0,
-        backgroundColor: 0x00000000,
-        // resizeTo: window,
+        backgroundColor: 0x00000000, // 透明
         width: window.innerWidth,
         height: window.innerHeight - 150,
-        transparent: true,
+        transparent: true, // 透明
     })
 }
 
@@ -52,7 +51,7 @@ export const draggable = (model: any) => {
     });
 
     model.on('scroll', async (e: any) => { // 滚轮
-        if (model.scale._x < 0.05) {
+        if (model.scale._x < 0.05) { // 对滚轮转动效果作出限制
             model.scale.set(0.05)
             return 
         }
