@@ -12,7 +12,7 @@ export const createPixi = (canvas: HTMLCanvasElement | null) => {
         backgroundAlpha: 0,
         backgroundColor: 0x00000000, // 透明
         width: window.innerWidth,
-        height: window.innerHeight - 150,
+        height: window.innerHeight - 120,
         transparent: true, // 透明
     })
 }
@@ -49,6 +49,11 @@ export const draggable = (model: any) => {
             model.position.set(e.data.global.x - model.offsetX, e.data.global.y - model.offsetY);
         }
     });
+
+    model.on("wheelcapture", (e: any) => {
+        console.log('e->', e);
+        
+    })
 
     model.on('scroll', async (e: any) => { // 滚轮
         if (model.scale._x < 0.05) { // 对滚轮转动效果作出限制

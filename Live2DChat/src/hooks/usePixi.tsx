@@ -87,10 +87,17 @@ const usePixi = () => {
 
     useEffect(()=>{ // 监听是否在房间中 是否有未渲染的模型 
 
-        if(!inRoom && appRef.current){ // 退出房间 模型移除 结束
-            appRef.current?.stage.removeChildren()
-            appRef.current = undefined;
-            console.log('[exit Room] app清空');
+        // 不在房间中
+        if(!inRoom && appRef.current){
+            
+            const removeChilds = appRef.current.stage.removeChildren(0, appRef.current.stage.children.length); // 模型移除
+            removeChilds.forEach((c) => {
+                c.destroy({
+                    children: true,
+                    texture: true,
+                    baseTexture: true,
+                })
+            })
 
             models.current = [];
             console.log('[exit Room] model清空');
@@ -99,11 +106,13 @@ const usePixi = () => {
             console.log('[exit Room] rendered清空');
             
             
-            return ;
+            return ;// 结束
         }
+        
+        // 在房间中
         if(!needRender[0]) return  // 没有需要渲染的模型 结束
 
-        if(!rendered[0]){ // 没有已经渲染的模型      
+        if(!appRef.current){ // 没有已经渲染的模型 没有创建过pixi应用
             setPixi() // 初始化
         }
         else {

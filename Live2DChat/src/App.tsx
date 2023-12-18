@@ -1,7 +1,5 @@
-import { useEffect, createContext, useRef } from 'react';
+import { createContext, useRef } from 'react';
 import './App.css'
-import { useAppSelector, useAppDispatch } from './store/hook';
-import { setUserId } from './store/slice/userInfo';
 import Home from './pages/Home'
 import { ConfigProvider } from 'antd';
 
@@ -13,16 +11,8 @@ export const AppContext = createContext<{
 
 function App() {
 
-  const { userId } = useAppSelector((state) => state.userInfo)
-  const dispatch = useAppDispatch();
-
   const socketRef = useRef<WebSocket>()
   const peerRef = useRef<RTCPeerConnection>()
-
-  useEffect(() => { // 用户身份验证
-    if (userId) return;
-    
-  }, [])
 
   return (
     <AppContext.Provider value={{ socketRef, peerRef }}>

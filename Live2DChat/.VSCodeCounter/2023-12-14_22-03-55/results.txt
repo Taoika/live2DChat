@@ -1,0 +1,65 @@
+Date : 2023-12-14 22:03:55
+Directory : d:\QG\projectCode\live2DChat\Live2DChat\src
+Total : 24 files,  865 codes, 72 comments, 205 blanks, all 1142 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| TypeScript JSX |          9 |        499 |         38 |        146 |        683 |
+| TypeScript     |         10 |        292 |         26 |         47 |        365 |
+| SCSS           |          1 |         49 |          0 |          7 |         56 |
+| CSS            |          2 |         23 |          0 |          5 |         28 |
+| XML            |          1 |          1 |          0 |          0 |          1 |
+| JavaScript     |          1 |          1 |          8 |          0 |          9 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         24 |        865 |         72 |        205 |      1,142 |
+| . (Files)                                                                    |          5 |         58 |          1 |         15 |         74 |
+| assets                                                                       |          1 |          1 |          0 |          0 |          1 |
+| hooks                                                                        |          6 |        414 |         38 |        125 |        577 |
+| hooks (Files)                                                                |          4 |        288 |         37 |         89 |        414 |
+| hooks\socket                                                                 |          2 |        126 |          1 |         36 |        163 |
+| pages                                                                        |          2 |         99 |          0 |         19 |        118 |
+| pages\Home                                                                   |          2 |         99 |          0 |         19 |        118 |
+| store                                                                        |          4 |         76 |          4 |         20 |        100 |
+| store (Files)                                                                |          2 |         15 |          2 |          4 |         21 |
+| store\slice                                                                  |          2 |         61 |          2 |         16 |         79 |
+| type                                                                         |          1 |         53 |          0 |          2 |         55 |
+| utils                                                                        |          5 |        164 |         29 |         24 |        217 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                     | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| d:\QG\projectCode\live2DChat\Live2DChat\src\App.css                          | CSS            |          0 |          0 |          1 |          1 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\App.tsx                          | TypeScript JSX |         22 |          0 |          7 |         29 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\assets\react.svg                 | XML            |          1 |          0 |          0 |          1 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\socket\useSocket.tsx       | TypeScript JSX |         72 |          1 |         20 |         93 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\socket\useSocketHandle.tsx | TypeScript JSX |         54 |          0 |         16 |         70 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\useDataChannel.tsx         | TypeScript JSX |         56 |          5 |         13 |         74 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\useFace.tsx                | TypeScript JSX |         77 |         18 |         21 |        116 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\usePeer.tsx                | TypeScript JSX |         64 |          4 |         16 |         84 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\usePixi.tsx                | TypeScript JSX |         91 |         10 |         39 |        140 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\index.css                        | CSS            |         23 |          0 |          4 |         27 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\main.tsx                         | TypeScript JSX |         13 |          0 |          2 |         15 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\pages\Home\index.scss            | SCSS           |         49 |          0 |          7 |         56 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\pages\Home\index.tsx             | TypeScript JSX |         50 |          0 |         12 |         62 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\store\hook.ts                    | TypeScript     |          4 |          0 |          1 |          5 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\store\index.ts                   | TypeScript     |         11 |          2 |          3 |         16 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\store\slice\live2d.ts            | TypeScript     |         24 |          1 |          8 |         33 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\store\slice\userInfo.ts          | TypeScript     |         37 |          1 |          8 |         46 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\type\Live2d.d.ts                 | TypeScript     |         53 |          0 |          2 |         55 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\utils\camera.ts                  | TypeScript     |         14 |          1 |          1 |         16 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\utils\live2dcubismcore.min.js    | JavaScript     |          1 |          8 |          0 |          9 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\utils\model.ts                   | TypeScript     |        113 |         19 |         19 |        151 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\utils\notice.ts                  | TypeScript     |         12 |          0 |          3 |         15 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\utils\transform.ts               | TypeScript     |         24 |          1 |          1 |         26 |
+| d:\QG\projectCode\live2DChat\Live2DChat\src\vite-env.d.ts                    | TypeScript     |          0 |          1 |          1 |          2 |
+| Total                                                                        |                |        865 |         72 |        205 |      1,142 |
++------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

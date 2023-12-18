@@ -1,0 +1,26 @@
+"filename", "language", "TypeScript", "TypeScript JSX", "CSS", "SCSS", "XML", "JavaScript", "comment", "blank", "total"
+"d:\QG\projectCode\live2DChat\Live2DChat\src\App.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 1, 1
+"d:\QG\projectCode\live2DChat\Live2DChat\src\App.tsx", "TypeScript JSX", 0, 22, 0, 0, 0, 0, 0, 7, 29
+"d:\QG\projectCode\live2DChat\Live2DChat\src\assets\react.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 1
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\socket\useSocket.tsx", "TypeScript JSX", 0, 72, 0, 0, 0, 0, 1, 20, 93
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\socket\useSocketHandle.tsx", "TypeScript JSX", 0, 54, 0, 0, 0, 0, 0, 16, 70
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\useDataChannel.tsx", "TypeScript JSX", 0, 56, 0, 0, 0, 0, 5, 13, 74
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\useFace.tsx", "TypeScript JSX", 0, 77, 0, 0, 0, 0, 18, 21, 116
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\usePeer.tsx", "TypeScript JSX", 0, 64, 0, 0, 0, 0, 4, 16, 84
+"d:\QG\projectCode\live2DChat\Live2DChat\src\hooks\usePixi.tsx", "TypeScript JSX", 0, 91, 0, 0, 0, 0, 10, 39, 140
+"d:\QG\projectCode\live2DChat\Live2DChat\src\index.css", "CSS", 0, 0, 23, 0, 0, 0, 0, 4, 27
+"d:\QG\projectCode\live2DChat\Live2DChat\src\main.tsx", "TypeScript JSX", 0, 13, 0, 0, 0, 0, 0, 2, 15
+"d:\QG\projectCode\live2DChat\Live2DChat\src\pages\Home\index.scss", "SCSS", 0, 0, 0, 49, 0, 0, 0, 7, 56
+"d:\QG\projectCode\live2DChat\Live2DChat\src\pages\Home\index.tsx", "TypeScript JSX", 0, 50, 0, 0, 0, 0, 0, 12, 62
+"d:\QG\projectCode\live2DChat\Live2DChat\src\store\hook.ts", "TypeScript", 4, 0, 0, 0, 0, 0, 0, 1, 5
+"d:\QG\projectCode\live2DChat\Live2DChat\src\store\index.ts", "TypeScript", 11, 0, 0, 0, 0, 0, 2, 3, 16
+"d:\QG\projectCode\live2DChat\Live2DChat\src\store\slice\live2d.ts", "TypeScript", 24, 0, 0, 0, 0, 0, 1, 8, 33
+"d:\QG\projectCode\live2DChat\Live2DChat\src\store\slice\userInfo.ts", "TypeScript", 37, 0, 0, 0, 0, 0, 1, 8, 46
+"d:\QG\projectCode\live2DChat\Live2DChat\src\type\Live2d.d.ts", "TypeScript", 53, 0, 0, 0, 0, 0, 0, 2, 55
+"d:\QG\projectCode\live2DChat\Live2DChat\src\utils\camera.ts", "TypeScript", 14, 0, 0, 0, 0, 0, 1, 1, 16
+"d:\QG\projectCode\live2DChat\Live2DChat\src\utils\live2dcubismcore.min.js", "JavaScript", 0, 0, 0, 0, 0, 1, 8, 0, 9
+"d:\QG\projectCode\live2DChat\Live2DChat\src\utils\model.ts", "TypeScript", 113, 0, 0, 0, 0, 0, 19, 19, 151
+"d:\QG\projectCode\live2DChat\Live2DChat\src\utils\notice.ts", "TypeScript", 12, 0, 0, 0, 0, 0, 0, 3, 15
+"d:\QG\projectCode\live2DChat\Live2DChat\src\utils\transform.ts", "TypeScript", 24, 0, 0, 0, 0, 0, 1, 1, 26
+"d:\QG\projectCode\live2DChat\Live2DChat\src\vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 1, 1, 2
+"Total", "-", 292, 499, 23, 49, 1, 1, 72, 205, 1142
