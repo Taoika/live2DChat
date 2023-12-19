@@ -43,7 +43,7 @@ const useSocket = () => {
                     handleCandidate(JSON.parse(msg.data))
                     break;
                 case 'enterRoom':
-                    console.log(`[ws message] 用户${msg.data.userId}加入房间`);
+                    console.log(`[ws message] 用户${msg.data.userId}加入房间 模型为${msg.data.modelUrl}`);
                     handleEnterRoom(msg.data)
                     break;
                 case 'listUser':

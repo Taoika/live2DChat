@@ -62,13 +62,13 @@ const usePeer = () => {
 		})
     }
 
-    useEffect(()=>{ // 自己进入房间
+    useEffect(()=>{
         if(inRoom && !peerRef.current){ // 刚进入房间
             handleLocalStream()
             peerRef.current = createPeer();
             return ;
         }
-        if(!inRoom && peerRef.current){
+        if(!inRoom && peerRef.current){ // 退出房间
             peerRef.current.close();
             peerRef.current = undefined;
             console.log('[exit Room] peer清空');

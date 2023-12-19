@@ -28,7 +28,7 @@ const useDataChannel = (
 	
 		channel.onmessage = (event) => {
 			const { live2dData, userId } = JSON.parse(event.data);
-			let index = -1;			
+			let index = -1;					
 			renderedRef.current.forEach((value, i)=>{ // 判断用户在userModel中的索引值
 				if(value.userId == userId){
 					index = i;

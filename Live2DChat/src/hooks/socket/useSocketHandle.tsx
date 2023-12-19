@@ -32,7 +32,7 @@ const useHandleOffer = () => {
     }
 
     const handleEnterRoom = (data: any) => { // 处理 用户进入房间
-        dispatch(setNeedRender([...needUninstRef.current, { // 添加需要未渲染的模型
+        dispatch(setNeedRender([...needRenderRef.current, { // 添加需要未渲染的模型
             userId: data.userId,
             modelUrl: data.modelUrl
         }]))
@@ -56,7 +56,7 @@ const useHandleOffer = () => {
         }]))
     }
 
-    useEffect(()=>{ // needRender更新
+    useEffect(()=>{ // needRender更新      
         needRenderRef.current = needRender
     },[needRender])
 

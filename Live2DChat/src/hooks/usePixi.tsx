@@ -28,7 +28,7 @@ const usePixi = () => {
     const appRef = useRef<Application>()
 
     const getUrlList = (userModelList: userModel[]) => { // 从用户模型数组中提取模型数组
-        return userModelList.map(usermodel => usermodel.modelUrl)
+        return userModelList.map(userModel => userModel.modelUrl)
     }
 
     const setPixi = async () => { // pixi初始化
@@ -59,14 +59,17 @@ const usePixi = () => {
     }
 
     const updateModel = (app: Application) => { // 模型数据更新
-        
-        const modelUrlList = getUrlList(needRender)
 
+        // 这里可能是依靠奇怪的异步来工作的 下面模型的创建是异步的 然后由新模型到来的时候是随时会加入进来的 所以needRender的更新是同步的 model的更新是异步的
+        dispatch(setRendered([...rendered,...needRender])); // 更新已渲染模型
+        dispatch(setNeedRender([])); // 更新未渲染模型
+
+        const modelUrlList = getUrlList(needRender)
         const length = models.current.length
         
         // 模型
         var index = 1;
-        modelUrlList.forEach(async modelUrl => {
+        modelUrlList.forEach(async (modelUrl) => {
             
             var width = (length + index++) * 0.2 * window.innerWidth // 模型大小适配各端
             var scale = 0.1
@@ -77,17 +80,15 @@ const usePixi = () => {
             }
             const model = await createModel(modelUrl, [width, height], scale);
             models.current.push(model);
+            
             // pixi配置模型
             app.stage.addChild(model);
         })
-
-        dispatch(setRendered([...rendered,...needRender])); // 更新已渲染模型
-        dispatch(setNeedRender([])); // 更新未渲染模型
     }
 
     useEffect(()=>{ // 监听是否在房间中 是否有未渲染的模型 
 
-        // 不在房间中
+        // 不在房间中 
         if(!inRoom && appRef.current){
             
             const removeChilds = appRef.current.stage.removeChildren(0, appRef.current.stage.children.length); // 模型移除
@@ -104,7 +105,6 @@ const usePixi = () => {
 
             dispatch(setRendered([]))
             console.log('[exit Room] rendered清空');
-            
             
             return ;// 结束
         }
